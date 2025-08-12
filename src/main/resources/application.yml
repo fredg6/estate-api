@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: estate-api
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#Tomcat configuration
+server:
+  port: 9000
+
+#Log level configuration
+logging:
+  level:
+    root: ERROR
+    com:
+      openclassrooms: INFO
+    org:
+      springframework:
+        boot:
+          autoconfigure:
+            mysql: INFO
+          web:
+            embedded:
+              tomcat: INFO
