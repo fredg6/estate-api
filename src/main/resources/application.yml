@@ -1,26 +1,40 @@
 spring:
-  application.name: estate-api
+  application:
+    name: estate-api
   jpa:
-    hibernate.ddl-auto: update
+    hibernate:
+      ddl-auto: update
     show-sql: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mydb
-    username: user
-    password: secret
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jackson:
+    serialization:
+      fail_on_empty_beans: false
 
 #Tomcat configuration
-server.port: 9000
+server:
+  port: 9000
 
 #Log level configuration
-logging.level:
+logging:
+  level:
     root: ERROR
-    com.openclassrooms: INFO
-    org.springframework:
+    com:
+      openclassrooms: INFO
+    org:
+      springframework:
         boot:
-          autoconfigure.mysql: INFO
-          web.embedded.tomcat: INFO
+          autoconfigure:
+            mysql: INFO
+          web:
+            embedded:
+              tomcat: INFO
 
 jwt:
-  private.key: classpath:app.key
-  public.key: classpath:app.pub
+  private:
+    key: classpath:app.key
+  public:
+    key: classpath:app.pub

@@ -1,6 +1,7 @@
 package com.openclassrooms.estate_api.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,9 +9,8 @@ import lombok.EqualsAndHashCode;
 @Table(name = "users")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DBUser extends BaseEntity {
-    @Column(name = "email")
-    private String username;
-    private String password;
+public class User extends BaseEntity {
+    private String email;
     private String name;
+    private String password;
 }

@@ -1,6 +1,6 @@
 package com.openclassrooms.estate_api.configuration;
 
-import com.openclassrooms.estate_api.repository.DBUserRepository;
+import com.openclassrooms.estate_api.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,16 +12,16 @@ import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private final DBUserRepository dbUserRepository;
+    private final UserRepository userRepository;
 
-    public CustomUserDetailsService(DBUserRepository dbUserRepository) {
-        this.dbUserRepository = dbUserRepository;
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var dbUser = dbUserRepository.findByUsername(username);
+        var dbUser = userRepository.findByEmail(username);
 
-        return new User(dbUser.getUsername(), dbUser.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        return new User(dbUser.getEmail(), dbUser.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
     }
 }
