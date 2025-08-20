@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/api/auth")
-public class AuthController {
+@RequestMapping(value = "/api/auth", produces = APPLICATION_JSON_VALUE)
+public class AuthController implements AuthApi {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
@@ -24,7 +24,8 @@ public class AuthController {
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping(value = "/register", produces = APPLICATION_JSON_VALUE)
+    @Override
+    @PostMapping(value = "/register")
     public ResponseEntity<Object> register(@RequestBody UserRegisterDto userRegisterDto) {
         if (userRegisterDto.email() == null || userRegisterDto.name() == null || userRegisterDto.password() == null) {
             return ResponseEntity.badRequest().body(new Object());
