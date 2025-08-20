@@ -30,14 +30,22 @@ import java.security.interfaces.RSAPublicKey;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
-    @Value("${jwt.public.key}")
-    RSAPublicKey publicKey;
-    @Value("${jwt.private.key}")
-    RSAPrivateKey privateKey;
-
+    private final RSAPublicKey publicKey;
+    private final RSAPrivateKey privateKey;
     private final CustomUserDetailsService customUserDetailsService;
+    private static final String[] AUTH_WHITELIST = {
+            "/api/v1/auth/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
 
-    public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService) {
+    public SpringSecurityConfig(@Value("${jwt.public.key}") RSAPublicKey publicKey,
+                                @Value("${jwt.private.key}") RSAPrivateKey privateKey,
+                                CustomUserDetailsService customUserDetailsService) {
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
         this.customUserDetailsService = customUserDetailsService;
     }
 
@@ -48,6 +56,7 @@ public class SpringSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers(RegexRequestMatcher.regexMatcher("/api/auth/(register|login)")).anonymous()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
