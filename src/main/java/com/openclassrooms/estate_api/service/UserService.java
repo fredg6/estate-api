@@ -32,4 +32,8 @@ public class UserService {
         var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         return jwtService.generateToken(authentication);
     }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }
