@@ -2,14 +2,13 @@ package com.openclassrooms.estate_api.controller;
 
 import com.openclassrooms.estate_api.model.User;
 import com.openclassrooms.estate_api.model.dto.JwtDto;
+import com.openclassrooms.estate_api.model.dto.UserDto;
 import com.openclassrooms.estate_api.model.dto.UserRegisterDto;
 import com.openclassrooms.estate_api.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -32,5 +31,12 @@ public class AuthController implements AuthApi {
         }
         var jwt = userService.register(modelMapper.map(userRegisterDto, User.class));
         return ResponseEntity.ok(new JwtDto(jwt));
+    }
+
+    @Override
+    @GetMapping(value = "/me")
+    public ResponseEntity<Object> me(Authentication authentication) {
+        var user = userService.getUserByEmail(authentication.getName());
+        return ResponseEntity.ok(modelMapper.map(user, UserDto.class));
     }
 }
