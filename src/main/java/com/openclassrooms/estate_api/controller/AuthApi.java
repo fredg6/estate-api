@@ -1,8 +1,6 @@
 package com.openclassrooms.estate_api.controller;
 
-import com.openclassrooms.estate_api.model.dto.JwtDto;
-import com.openclassrooms.estate_api.model.dto.UserDto;
-import com.openclassrooms.estate_api.model.dto.UserRegisterDto;
+import com.openclassrooms.estate_api.model.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -33,4 +31,11 @@ public interface AuthApi {
             @ApiResponse(responseCode = "401", description = "Echec de l'authentification")
     })
     ResponseEntity<Object> me(Authentication authentication);
+
+    @Operation(summary = "Connexion d'un utilisateur")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Utilisateur connecté", content = @Content(schema = @Schema(implementation = JwtDto.class))),
+            @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = RestErrorDto.class)))
+    })
+    ResponseEntity<Object> login(@RequestBody UserLoginDto userLoginDto);
 }

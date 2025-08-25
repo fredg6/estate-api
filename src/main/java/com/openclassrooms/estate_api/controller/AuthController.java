@@ -41,10 +41,10 @@ public class AuthController implements AuthApi {
         return ResponseEntity.ok(modelMapper.map(user, UserDto.class));
     }
 
-//    @Override
+    @Override
     @PostMapping(value = "/login")
     public ResponseEntity<Object> login(@RequestBody UserLoginDto userLoginDto) {
-        var jwt = userService.login(userLoginDto.login(), userLoginDto.password());
+        var jwt = userService.login(userLoginDto.email(), userLoginDto.password());
         return ResponseEntity.ok(new JwtDto(jwt));
     }
 }
