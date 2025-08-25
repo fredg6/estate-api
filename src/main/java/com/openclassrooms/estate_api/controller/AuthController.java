@@ -3,6 +3,7 @@ package com.openclassrooms.estate_api.controller;
 import com.openclassrooms.estate_api.model.User;
 import com.openclassrooms.estate_api.model.dto.JwtDto;
 import com.openclassrooms.estate_api.model.dto.UserDto;
+import com.openclassrooms.estate_api.model.dto.UserLoginDto;
 import com.openclassrooms.estate_api.model.dto.UserRegisterDto;
 import com.openclassrooms.estate_api.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -38,5 +39,12 @@ public class AuthController implements AuthApi {
     public ResponseEntity<Object> me(Authentication authentication) {
         var user = userService.getUserByEmail(authentication.getName());
         return ResponseEntity.ok(modelMapper.map(user, UserDto.class));
+    }
+
+    @Override
+    @PostMapping(value = "/login")
+    public ResponseEntity<Object> login(@RequestBody UserLoginDto userLoginDto) {
+        var jwt = userService.login(userLoginDto.email(), userLoginDto.password());
+        return ResponseEntity.ok(new JwtDto(jwt));
     }
 }

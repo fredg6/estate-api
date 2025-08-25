@@ -5,6 +5,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
@@ -30,9 +32,6 @@ import java.security.interfaces.RSAPublicKey;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
-    private final RSAPublicKey publicKey;
-    private final RSAPrivateKey privateKey;
-    private final CustomUserDetailsService customUserDetailsService;
     private static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/**",
             "/v3/api-docs/**",
@@ -41,12 +40,19 @@ public class SpringSecurityConfig {
             "/swagger-ui.html"
     };
 
+    private final RSAPublicKey publicKey;
+    private final RSAPrivateKey privateKey;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+
     public SpringSecurityConfig(@Value("${jwt.public.key}") RSAPublicKey publicKey,
                                 @Value("${jwt.private.key}") RSAPrivateKey privateKey,
-                                CustomUserDetailsService customUserDetailsService) {
+                                CustomUserDetailsService customUserDetailsService,
+                                @Qualifier("delegatedAuthenticationEntryPoint") AuthenticationEntryPoint authenticationEntryPoint) {
         this.publicKey = publicKey;
         this.privateKey = privateKey;
         this.customUserDetailsService = customUserDetailsService;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Bean
@@ -59,6 +65,8 @@ public class SpringSecurityConfig {
                         .requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers(RegexRequestMatcher.regexMatcher("/api/auth/(register|login)")).anonymous()
                         .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
                 .build();
     }
