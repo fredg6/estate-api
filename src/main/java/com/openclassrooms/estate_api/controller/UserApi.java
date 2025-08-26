@@ -13,11 +13,12 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Authentication API")
+@Tag(name = "User API")
 @SecurityScheme(type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER, name = "Authorization", scheme = "Bearer", bearerFormat = "JWT")
-public interface AuthApi {
+public interface UserApi {
     @Operation(summary = "Création d'un utilisateur")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Création effectuée et utilisateur connecté", content = @Content(schema = @Schema(implementation = JwtDto.class))),
@@ -28,7 +29,7 @@ public interface AuthApi {
     @Operation(summary = "Récupération de l'utilisateur connecté", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Utilisateur authentifié et récupéré", content = @Content(schema = @Schema(implementation = UserDto.class))),
-            @ApiResponse(responseCode = "401", description = "Echec de l'authentification")
+            @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = RestErrorDto.class)))
     })
     ResponseEntity<Object> me(Authentication authentication);
 
@@ -38,4 +39,11 @@ public interface AuthApi {
             @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = RestErrorDto.class)))
     })
     ResponseEntity<Object> login(@RequestBody UserLoginDto userLoginDto);
+
+    @Operation(summary = "Récupération d'un utilisateur par son identifiant", security = @SecurityRequirement(name = "Authorization"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Utilisateur récupéré", content = @Content(schema = @Schema(implementation = UserDto.class))),
+            @ApiResponse(responseCode = "401", description = "Echec de l'authentification de l'utilisateur connecté", content = @Content(schema = @Schema(implementation = RestErrorDto.class)))
+    })
+    ResponseEntity<Object> one(@PathVariable Integer id);
 }
