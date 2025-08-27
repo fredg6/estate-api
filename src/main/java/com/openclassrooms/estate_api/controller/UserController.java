@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -52,6 +55,14 @@ public class UserController implements UserApi {
     @GetMapping(value = "/user/{id}")
     public ResponseEntity<Object> one(@PathVariable Integer id) {
         var user = userService.getUserById(id);
-        return ResponseEntity.ok(modelMapper.map(user, UserDto.class));
+        return ResponseEntity.ok(toDto(user));
+    }
+
+    private UserDto toDto(User user) {
+        var userDto = modelMapper.map(user, UserDto.class);
+        var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd").withZone(ZoneId.systemDefault());
+        userDto.setCreatedAt(dateTimeFormatter.format(user.getCreatedAt()));
+        userDto.setUpdatedAt(dateTimeFormatter.format(user.getUpdatedAt()));
+        return userDto;
     }
 }
