@@ -21,8 +21,9 @@ spring:
     multipart:
       max-file-size: 128KB
       max-request-size: 128KB
-  main:
-    allow-bean-definition-overriding: true
+
+storage:
+  location: ${STORAGE_LOCATION}
 
 #Tomcat configuration
 server:
