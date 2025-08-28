@@ -7,6 +7,8 @@ import com.openclassrooms.estate_api.repository.RentalRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RentalService {
     private final ModelMapper modelMapper;
@@ -28,6 +30,10 @@ public class RentalService {
         var pictureUrl = fileSystemStorageService.store(rentalCreationDto.picture());
         var owner = userService.getUserByEmail(ownerEmail);
         return rentalRepository.save(toEntity(rentalCreationDto, pictureUrl, owner));
+    }
+
+    public List<Rental> getAll() {
+        return rentalRepository.findAll();
     }
 
     private Rental toEntity(RentalCreationDto rentalCreationDto, String pictureUrl, User owner) {
