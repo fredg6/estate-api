@@ -17,6 +17,12 @@ spring:
   jackson:
     serialization:
       fail_on_empty_beans: false
+  servlet:
+    multipart:
+      max-file-size: 128KB
+      max-request-size: 128KB
+  main:
+    allow-bean-definition-overriding: true
 
 #Tomcat configuration
 server:

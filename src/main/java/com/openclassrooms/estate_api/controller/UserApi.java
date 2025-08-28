@@ -29,21 +29,21 @@ public interface UserApi {
     @Operation(summary = "Récupération de l'utilisateur connecté", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Utilisateur authentifié et récupéré", content = @Content(schema = @Schema(implementation = UserDto.class))),
-            @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = RestErrorDto.class)))
+            @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = ResponseDto.class)))
     })
     ResponseEntity<Object> me(Authentication authentication);
 
     @Operation(summary = "Connexion d'un utilisateur")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Utilisateur connecté", content = @Content(schema = @Schema(implementation = JwtDto.class))),
-            @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = RestErrorDto.class)))
+            @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = ResponseDto.class)))
     })
     ResponseEntity<Object> login(@RequestBody UserLoginDto userLoginDto);
 
     @Operation(summary = "Récupération d'un utilisateur par son identifiant", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Utilisateur récupéré", content = @Content(schema = @Schema(implementation = UserDto.class))),
-            @ApiResponse(responseCode = "401", description = "Echec de l'authentification de l'utilisateur connecté", content = @Content(schema = @Schema(implementation = RestErrorDto.class)))
+            @ApiResponse(responseCode = "401", description = "Echec de l'authentification de l'utilisateur connecté", content = @Content(schema = @Schema(implementation = ResponseDto.class)))
     })
     ResponseEntity<Object> one(@PathVariable Integer id);
 }

@@ -1,6 +1,7 @@
 package com.openclassrooms.estate_api.controller.advice;
 
-import com.openclassrooms.estate_api.model.dto.RestErrorDto;
+import com.openclassrooms.estate_api.exception.StorageException;
+import com.openclassrooms.estate_api.model.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -13,8 +14,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseBody
-    public ResponseEntity<RestErrorDto> handleAuthenticationException(Exception ex) {
-        RestErrorDto restErrorDto = new RestErrorDto("Authentication failed");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(restErrorDto);
+    public ResponseEntity<ResponseDto> handleAuthenticationException(Exception ex) {
+        ResponseDto responseDto = new ResponseDto("Authentication failed");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDto);
+    }
+
+    @ExceptionHandler(StorageException.class)
+    @ResponseBody
+    public ResponseEntity<ResponseDto> handleStorageException(Exception ex) {
+        ResponseDto responseDto = new ResponseDto(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
     }
 }
