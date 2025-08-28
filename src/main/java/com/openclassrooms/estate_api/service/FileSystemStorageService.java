@@ -1,7 +1,7 @@
 package com.openclassrooms.estate_api.service;
 
 import com.openclassrooms.estate_api.exception.StorageException;
-import jakarta.servlet.ServletContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,12 +13,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class StorageService {
-    private static final String RENTAL_PICTURE_DIR_RELATIVE_PATH = "src/main/resources/static/images/rental";
+public class FileSystemStorageService {
     private final Path rootLocation;
 
-    public StorageService(ServletContext servletContext) {
-        this.rootLocation = Paths.get(servletContext.getContextPath(),RENTAL_PICTURE_DIR_RELATIVE_PATH);
+    public FileSystemStorageService(@Value("${storage.location}") String storageLocation) {
+        if(storageLocation.trim().isEmpty()){
+            throw new StorageException("File upload location can not be empty.");
+        }
+        this.rootLocation = Paths.get(storageLocation);
         init();
     }
 
@@ -36,7 +38,7 @@ public class StorageService {
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, destinationFile);
             }
-            return destinationFile.getFileName().toString();
+            return destinationFile.toUri().toURL().toString();
         }
         catch (IOException e) {
             if (e instanceof FileAlreadyExistsException) {
