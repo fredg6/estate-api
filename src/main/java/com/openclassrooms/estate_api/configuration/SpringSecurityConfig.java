@@ -33,6 +33,7 @@ import java.security.interfaces.RSAPublicKey;
 @EnableWebSecurity
 public class SpringSecurityConfig {
     private static final String[] AUTH_WHITELIST = {
+            "/images/**",
             "/api/v1/auth/**",
             "/v3/api-docs/**",
             "/v3/api-docs.yaml",
