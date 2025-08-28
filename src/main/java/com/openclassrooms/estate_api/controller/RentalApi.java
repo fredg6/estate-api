@@ -1,6 +1,7 @@
 package com.openclassrooms.estate_api.controller;
 
 import com.openclassrooms.estate_api.model.dto.RentalCreationDto;
+import com.openclassrooms.estate_api.model.dto.RentalDto;
 import com.openclassrooms.estate_api.model.dto.RentalsDto;
 import com.openclassrooms.estate_api.model.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,4 +34,11 @@ public interface RentalApi {
             @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = ResponseDto.class)))
     })
     ResponseEntity<Object> all();
+
+    @Operation(summary = "Récupération d'une offre de location par son identifiant", security = @SecurityRequirement(name = "Authorization"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Offre de location récupérée", content = @Content(schema = @Schema(implementation = RentalDto.class))),
+            @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = ResponseDto.class)))
+    })
+    ResponseEntity<Object> one(Integer id);
 }
