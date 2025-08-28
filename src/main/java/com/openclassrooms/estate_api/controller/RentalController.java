@@ -43,6 +43,13 @@ public class RentalController implements RentalApi {
         return ResponseEntity.ok(new RentalsDto(rentalDtoList));
     }
 
+    @Override
+    @GetMapping(value = "/rentals/{id}")
+    public ResponseEntity<Object> one(@PathVariable Integer id) {
+        var rental = rentalService.getById(id);
+        return ResponseEntity.ok(toDto(rental));
+    }
+
     private RentalDto toDto(Rental rental) {
         var rentalDto = modelMapper.map(rental, RentalDto.class);
         rentalDto.setOwnerId(rental.getOwner().getId());

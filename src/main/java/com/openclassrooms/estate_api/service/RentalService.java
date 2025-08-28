@@ -36,6 +36,10 @@ public class RentalService {
         return rentalRepository.findAll();
     }
 
+    public Rental getById(Integer id) {
+        return rentalRepository.getReferenceById(id);
+    }
+
     private Rental toEntity(RentalCreationDto rentalCreationDto, String pictureUrl, User owner) {
         var rental = modelMapper.map(rentalCreationDto, Rental.class);
         rental.setPicture(pictureUrl);
