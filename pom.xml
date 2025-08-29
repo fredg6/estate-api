@@ -65,6 +65,11 @@
             <artifactId>modelmapper-module-record</artifactId>
             <version>${modelmapper-module-record.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http5</artifactId>
+            <version>2.3.2</version>
+        </dependency>
 
 		<dependency>
 			<groupId>com.mysql</groupId>
