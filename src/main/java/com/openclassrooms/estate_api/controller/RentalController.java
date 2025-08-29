@@ -1,10 +1,7 @@
 package com.openclassrooms.estate_api.controller;
 
 import com.openclassrooms.estate_api.model.Rental;
-import com.openclassrooms.estate_api.model.dto.RentalCreationDto;
-import com.openclassrooms.estate_api.model.dto.RentalDto;
-import com.openclassrooms.estate_api.model.dto.RentalsDto;
-import com.openclassrooms.estate_api.model.dto.ResponseDto;
+import com.openclassrooms.estate_api.model.dto.*;
 import com.openclassrooms.estate_api.service.RentalService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +45,13 @@ public class RentalController implements RentalApi {
     public ResponseEntity<Object> one(@PathVariable Integer id) {
         var rental = rentalService.getById(id);
         return ResponseEntity.ok(toDto(rental));
+    }
+
+    @Override
+    @PutMapping(value = "/rentals/{id}")
+    public ResponseEntity<ResponseDto> update(@PathVariable Integer id, @ModelAttribute RentalUpdateDto rentalUpdateDto) {
+        rentalService.update(id, rentalUpdateDto);
+        return ResponseEntity.ok(new ResponseDto("Rental updated !"));
     }
 
     private RentalDto toDto(Rental rental) {

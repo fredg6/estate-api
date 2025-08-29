@@ -3,6 +3,7 @@ package com.openclassrooms.estate_api.service;
 import com.openclassrooms.estate_api.model.Rental;
 import com.openclassrooms.estate_api.model.User;
 import com.openclassrooms.estate_api.model.dto.RentalCreationDto;
+import com.openclassrooms.estate_api.model.dto.RentalUpdateDto;
 import com.openclassrooms.estate_api.repository.RentalRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,12 @@ public class RentalService {
 
     public Rental getById(Integer id) {
         return rentalRepository.getReferenceById(id);
+    }
+
+    public Rental update(Integer id, RentalUpdateDto rentalUpdateDto) {
+        var rentalToUpdate = rentalRepository.getReferenceById(id);
+        modelMapper.map(rentalUpdateDto, rentalToUpdate);
+        return rentalRepository.save(rentalToUpdate);
     }
 
     private Rental toEntity(RentalCreationDto rentalCreationDto, String pictureUrl, User owner) {
