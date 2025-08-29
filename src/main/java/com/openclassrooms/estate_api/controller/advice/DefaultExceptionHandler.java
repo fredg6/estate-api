@@ -1,6 +1,6 @@
 package com.openclassrooms.estate_api.controller.advice;
 
-import com.openclassrooms.estate_api.exception.StorageException;
+import com.openclassrooms.estate_api.exception.UploadException;
 import com.openclassrooms.estate_api.model.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +19,9 @@ public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseDto);
     }
 
-    @ExceptionHandler(StorageException.class)
+    @ExceptionHandler(UploadException.class)
     @ResponseBody
-    public ResponseEntity<ResponseDto> handleStorageException(Exception ex) {
+    public ResponseEntity<ResponseDto> handleUploadException(Exception ex) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDto);
     }

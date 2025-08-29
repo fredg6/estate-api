@@ -17,13 +17,6 @@ spring:
   jackson:
     serialization:
       fail_on_empty_beans: false
-  servlet:
-    multipart:
-      max-file-size: 128KB
-      max-request-size: 128KB
-
-storage:
-  location: ${STORAGE_LOCATION}
 
 #Tomcat configuration
 server:
@@ -49,3 +42,6 @@ jwt:
     key: classpath:app.key
   public:
     key: classpath:app.pub
+
+cloudinary:
+  url: cloudinary://${CLOUDINARY_API_KEY}:${CLOUDINARY_SECRET}@${CLOUDINARY_CLOUD_NAME}
