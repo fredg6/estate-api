@@ -37,7 +37,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public User getUserById(Integer id) {
+    public User getById(Integer id) {
         return userRepository.getReferenceById(id);
     }
 }

@@ -1,10 +1,7 @@
 package com.openclassrooms.estate_api.controller;
 
 import com.openclassrooms.estate_api.model.User;
-import com.openclassrooms.estate_api.model.dto.JwtDto;
-import com.openclassrooms.estate_api.model.dto.UserDto;
-import com.openclassrooms.estate_api.model.dto.UserLoginDto;
-import com.openclassrooms.estate_api.model.dto.UserRegisterDto;
+import com.openclassrooms.estate_api.model.dto.*;
 import com.openclassrooms.estate_api.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +28,7 @@ public class UserController implements UserApi {
     @PostMapping(value = "/auth/register")
     public ResponseEntity<Object> register(@RequestBody UserRegisterDto userRegisterDto) {
         if (userRegisterDto.email() == null || userRegisterDto.name() == null || userRegisterDto.password() == null) {
-            return ResponseEntity.badRequest().body(new Object());
+            return ResponseEntity.badRequest().body(new EmptyDto());
         }
         var jwt = userService.register(modelMapper.map(userRegisterDto, User.class));
         return ResponseEntity.ok(new JwtDto(jwt));
@@ -54,7 +51,7 @@ public class UserController implements UserApi {
     @Override
     @GetMapping(value = "/user/{id}")
     public ResponseEntity<Object> one(@PathVariable Integer id) {
-        var user = userService.getUserById(id);
+        var user = userService.getById(id);
         return ResponseEntity.ok(toDto(user));
     }
 
