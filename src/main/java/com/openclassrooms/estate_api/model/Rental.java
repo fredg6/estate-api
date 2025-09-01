@@ -13,7 +13,6 @@ public class Rental extends BaseEntity {
     private Long surface;
     private Long price;
     private String picture;
-    @Column(length = 2000)
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
