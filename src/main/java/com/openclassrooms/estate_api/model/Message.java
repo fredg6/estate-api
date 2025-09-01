@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Message extends BaseEntity {
-    @Column(length = 2000)
     private String message;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id")
