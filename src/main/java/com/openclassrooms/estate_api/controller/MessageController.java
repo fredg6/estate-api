@@ -2,7 +2,7 @@ package com.openclassrooms.estate_api.controller;
 
 import com.openclassrooms.estate_api.model.dto.EmptyDto;
 import com.openclassrooms.estate_api.model.dto.MessageDto;
-import com.openclassrooms.estate_api.model.dto.ResponseDto;
+import com.openclassrooms.estate_api.model.dto.ResponseMessageDto;
 import com.openclassrooms.estate_api.service.MessageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +28,6 @@ public class MessageController implements MessageApi {
             return ResponseEntity.badRequest().body(new EmptyDto());
         }
         messageService.send(messageDto);
-        return ResponseEntity.ok(new ResponseDto("Message sent with success !"));
+        return ResponseEntity.ok(new ResponseMessageDto("Message sent with success !"));
     }
 }

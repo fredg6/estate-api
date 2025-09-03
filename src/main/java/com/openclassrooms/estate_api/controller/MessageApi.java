@@ -1,7 +1,7 @@
 package com.openclassrooms.estate_api.controller;
 
 import com.openclassrooms.estate_api.model.dto.MessageDto;
-import com.openclassrooms.estate_api.model.dto.ResponseDto;
+import com.openclassrooms.estate_api.model.dto.ResponseMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -19,8 +19,8 @@ import org.springframework.http.ResponseEntity;
 public interface MessageApi {
     @Operation(summary = "Envoi d'un message au propriétaire d'une offre de location", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Message envoyé avec succès", content = @Content(schema = @Schema(implementation = ResponseDto.class))),
-            @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "200", description = "Message envoyé avec succès", content = @Content(schema = @Schema(implementation = ResponseMessageDto.class))),
+            @ApiResponse(responseCode = "401", description = "Echec de l'authentification", content = @Content(schema = @Schema(implementation = ResponseMessageDto.class))),
             @ApiResponse(responseCode = "400", description = "Donnée manquante")
     })
     ResponseEntity<Object> send(MessageDto messageDto);
