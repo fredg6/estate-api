@@ -27,14 +27,14 @@ public class RentalController implements RentalApi {
 
     @Override
     @PostMapping(value = "/rentals")
-    public ResponseEntity<ResponseDto> create(Authentication authentication, @ModelAttribute RentalCreationDto rentalCreationDto) {
+    public ResponseEntity<ResponseMessageDto> create(Authentication authentication, @ModelAttribute RentalCreationDto rentalCreationDto) {
         rentalService.create(rentalCreationDto, authentication.getName());
-        return ResponseEntity.ok(new ResponseDto("Rental created !"));
+        return ResponseEntity.ok(new ResponseMessageDto("Rental created !"));
     }
 
     @Override
     @GetMapping(value = "/rentals")
-    public ResponseEntity<Object> all() {
+    public ResponseEntity<RentalsDto> all() {
         var rentalList = rentalService.getAll();
         var rentalDtoList = rentalList.stream().map(this::toDto).collect(Collectors.toList());
         return ResponseEntity.ok(new RentalsDto(rentalDtoList));
@@ -42,16 +42,16 @@ public class RentalController implements RentalApi {
 
     @Override
     @GetMapping(value = "/rentals/{id}")
-    public ResponseEntity<Object> one(@PathVariable Integer id) {
+    public ResponseEntity<RentalDto> one(@PathVariable Integer id) {
         var rental = rentalService.getById(id);
         return ResponseEntity.ok(toDto(rental));
     }
 
     @Override
     @PutMapping(value = "/rentals/{id}")
-    public ResponseEntity<ResponseDto> update(@PathVariable Integer id, @ModelAttribute RentalUpdateDto rentalUpdateDto) {
+    public ResponseEntity<ResponseMessageDto> update(@PathVariable Integer id, @ModelAttribute RentalUpdateDto rentalUpdateDto) {
         rentalService.update(id, rentalUpdateDto);
-        return ResponseEntity.ok(new ResponseDto("Rental updated !"));
+        return ResponseEntity.ok(new ResponseMessageDto("Rental updated !"));
     }
 
     private RentalDto toDto(Rental rental) {

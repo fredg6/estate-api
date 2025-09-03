@@ -36,21 +36,21 @@ public class UserController implements UserApi {
 
     @Override
     @GetMapping(value = "/auth/me")
-    public ResponseEntity<Object> me(Authentication authentication) {
+    public ResponseEntity<UserDto> me(Authentication authentication) {
         var user = userService.getUserByEmail(authentication.getName());
         return ResponseEntity.ok(modelMapper.map(user, UserDto.class));
     }
 
     @Override
     @PostMapping(value = "/auth/login")
-    public ResponseEntity<Object> login(@RequestBody UserLoginDto userLoginDto) {
+    public ResponseEntity<JwtDto> login(@RequestBody UserLoginDto userLoginDto) {
         var jwt = userService.login(userLoginDto.email(), userLoginDto.password());
         return ResponseEntity.ok(new JwtDto(jwt));
     }
 
     @Override
     @GetMapping(value = "/user/{id}")
-    public ResponseEntity<Object> one(@PathVariable Integer id) {
+    public ResponseEntity<UserDto> one(@PathVariable Integer id) {
         var user = userService.getById(id);
         return ResponseEntity.ok(toDto(user));
     }
