@@ -42,4 +42,4 @@ jwt:
     key: classpath:app.pub
 
 cloudinary:
-  url: cloudinary://${CLOUDINARY_API_KEY}:${CLOUDINARY_SECRET}@${CLOUDINARY_CLOUD_NAME}
+  url: ${CLOUDINARY_URL}
