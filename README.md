@@ -47,6 +47,6 @@ Après connexion au compte créé, les composantes de l'URL ci-dessus sont visib
 ## Démarrage de l'application
 
 Dans le répertoire du projet, exécuter la commande :
-> ./mwnw spring-boot:run
+> ./mvnw spring-boot:run
 
 L'application est documentée et testable via Swagger à l'adresse http://localhost:9000/swagger-ui.html 
