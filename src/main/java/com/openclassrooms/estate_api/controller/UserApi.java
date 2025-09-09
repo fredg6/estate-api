@@ -74,7 +74,7 @@ public interface UserApi {
                     examples = @ExampleObject(
                             value = """
                                     {
-                                        "login": "test@test.com",
+                                        "email": "test@test.com",
                                         "password": "test!31"
                                     }""")))
     @ApiResponses({
